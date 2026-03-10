@@ -16,6 +16,8 @@ class Enemy {
         
     public:
         int health = 1;
+        int scoreValue = 50;
+        bool del = false;
         std::pair<float, float> position;
         HitBox hitBox;
 
@@ -54,6 +56,7 @@ class Enemy {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
                             p.second->health--;
                             p2.del = true;
+                            
                         }
                     }
 
@@ -61,7 +64,8 @@ class Enemy {
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
-                        p.second = nullptr;
+                        p.second->del = true;
+                        
                     }
                 }
             }
@@ -70,6 +74,7 @@ class Enemy {
                 if ((Enemy::enemies[i].second && Enemy::enemies[i].second->position.first <= -30) || 
                     (!Enemy::enemies[i].second && Enemy::enemies[i].first.first == 0 && Enemy::enemies[i].first.second == 0)) {
                     Enemy::enemies.erase(Enemy::enemies.begin() + i);
+                    i--;
                 }
             }
 

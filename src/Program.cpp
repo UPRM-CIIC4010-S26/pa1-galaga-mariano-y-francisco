@@ -1,6 +1,7 @@
 #include "Program.hpp"
 
 Program::Program() {
+    score = 0;
     Background::sideWalls = std::pair<HitBox, HitBox>{ 
         HitBox(0, 0, 10, GetScreenHeight()), 
         HitBox(GetScreenWidth() - 10, 0, 10, GetScreenHeight())
@@ -62,6 +63,12 @@ void Program::Update() {
             p.update(); 
 
         }
+        for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) 
+        if (p.second && p.second->health <= 0) {
+            score += p.second->scoreValue;
+            p.second = nullptr;
+            
+        }
 
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
@@ -84,11 +91,14 @@ void Program::Draw() {
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
 
+    DrawText(TextFormat("Score: %i", score), 10, 10, 24, WHITE);
+
     if (startup) DrawStartup();
     if (paused) DrawPauseScreen();
     if (gameOver) DrawGameOver();
 }
 
+        
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
 
@@ -185,6 +195,7 @@ void Program::Reset() {
     Enemy::enemies.clear();
     StdEnemy::attackInProgress = false;
     player = new Player((GetScreenWidth() / 2) - 15, GetScreenHeight() * 0.75f);
+    score = 0;
     respawnCooldown = 1080;
     respawns = 0;
     count = 0;
