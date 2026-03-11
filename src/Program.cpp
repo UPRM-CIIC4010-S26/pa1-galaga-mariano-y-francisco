@@ -116,19 +116,19 @@ void Program::Draw() {
         
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
-    int difficulty = score / 1000;
-    respawnCooldown -= (1 + (score / 1000));
+    int difficulty = std::max(std::min(score / 1000, 10), 2);
+    respawnCooldown -= difficulty;
     if (respawnCooldown <= 0) {
-        respawnCooldown = std::max(1080 - (score / 2), 500);
+        respawnCooldown = 900;
         for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
             if (!p.second && p.first.second != 150) {
                 int eType = GetRandomValue(1, 3);
 
                 if (eType == 1) {
                     p.second = new StEnemy(GetScreenWidth() / 2 - 15, 0, true);
-                    respawnCooldown /= 2;
                 } else {
                     p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true);
+                    respawnCooldown /= 2;
                 }
 
                 respawns++;
@@ -142,7 +142,7 @@ void Program::ManageEnemyRespawns() {
     }
 
     if(respawns >= 4) {
-        count = 4;
+        count = GetRandomValue(4, 6);
         respawns = 0;
     }
 
@@ -153,7 +153,7 @@ void Program::ManageEnemyRespawns() {
         });
 
         count--;
-        delay = 20;
+        delay = 30;
     }
 }
 
