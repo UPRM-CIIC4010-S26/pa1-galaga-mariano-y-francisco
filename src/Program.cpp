@@ -111,7 +111,7 @@ void Program::ManageEnemyRespawns() {
     int difficulty = score / 1000;
     respawnCooldown -= (1 + (score / 1000));
     if (respawnCooldown <= 0) {
-        respawnCooldown = std::max(1080 - (score / 2), 300);
+        respawnCooldown = std::max(1080 - (score / 2), 500);
         for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
             if (!p.second && p.first.second != 150) {
                 int eType = GetRandomValue(1, 3);
