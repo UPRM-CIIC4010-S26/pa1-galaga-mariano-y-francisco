@@ -73,6 +73,13 @@ void Program::Update() {
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
         Projectile::ProjectileCollision();
+
+        if (score >= newlive) {
+            if (lives < 5){
+                lives++;
+            }
+            newlive += 1000;
+        }
     }
 }
 
@@ -165,7 +172,10 @@ void Program::KeyInputs() {
     if (!paused && !startup && IsKeyPressed('O')) gameOver = !gameOver;
     if (!gameOver && !paused && IsKeyPressed('I')) startup = !startup;
     if (IsKeyPressed('H')) HitBox::drawHitbox = !HitBox::drawHitbox;
-    
+    if (IsKeyPressed('K')) {
+        score += 500;
+        std::cout << "Score increased by 500. Current score: " << score << std::endl;
+    }
     if (gameOver && IsKeyPressed(KEY_ENTER)) {
         gameOver = false;
         Reset();
@@ -201,6 +211,7 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+    newlive = 1000;
     Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
             std::pair<float, float>{350, 150}, 
             new SpEnemy(350, 150)
