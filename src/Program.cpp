@@ -52,12 +52,15 @@ void Program::Update() {
                 player->position.first = GetScreenWidth() / 2 - 15;
                 p.second->health = 0;
                 pauseFrames = 120;
+                if (lives > 1) {
+                    player->setMissiles(2);
+                }
                 lives--;
             }
         }
 
         for (Projectile& p : Projectile::projectiles) { 
-            if (HitBox::Collision(player->hitBox, p.getHitBox()) && p.ID != 0) {
+            if (HitBox::Collision(player->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3)) {
                 PlayerReset();
             }
             p.update(); 
@@ -88,6 +91,11 @@ void Program::Draw() {
     if (pauseFrames <= 0 && !gameOver) player->draw();
     for (Animation& a : Animation::animations) a.draw();
 
+    for (int i = 0; i < player->getMissiles(); i++) {  
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{37, 54, 15, 20}, 
+                   Rectangle{0.0f + i * 20, GetScreenHeight() - 70.0f, 30, 40}, 
+                   Vector2{0, 0}, 0, WHITE);
+    }    
     for (int i = 0; i < lives; i++) {
          DrawTexturePro(ImageManager::SpriteSheet, Rectangle{0, 0, 17, 18}, 
                    Rectangle{10.0f + i * 30, GetScreenHeight() - 30.0f, 20, 20}, 
@@ -176,6 +184,10 @@ void Program::KeyInputs() {
         score += 500;
         std::cout << "Score increased by 500. Current score: " << score << std::endl;
     }
+    if (IsKeyPressed('L')) {
+        player->setMissiles(player->getMissiles() + 1);
+        std::cout << "Missile added. Current missiles: " << player->getMissiles() << std::endl;
+    }
     if (gameOver && IsKeyPressed(KEY_ENTER)) {
         gameOver = false;
         Reset();
@@ -198,6 +210,7 @@ void Program::PlayerReset() {
     Projectile::projectiles.clear();
     player->position.first = GetScreenWidth() / 2 - 15;
     pauseFrames = 120;
+    if (lives > 1) player->setMissiles(2);
     lives--;
 }
 

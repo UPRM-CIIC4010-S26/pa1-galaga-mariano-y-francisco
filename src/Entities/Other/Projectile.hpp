@@ -2,6 +2,7 @@
 #define _USE_MATH_DEFINES
 #include "Hitbox.hpp"
 #include "SoundManager.hpp"
+#include "ImageManager.hpp"
 
 class Projectile {
     protected:
@@ -9,7 +10,7 @@ class Projectile {
         HitBox hitBox = HitBox();
         float angle = 90;
         int speed = 6;
-
+        int timeout = 0;
     public: 
         bool del = false;
         int ID;
@@ -27,6 +28,13 @@ class Projectile {
             this->position.second = y;
             this->hitBox = HitBox(x, y, 2, 5);
             this->angle = angle;
+            this->ID = ID;
+        }
+
+        Projectile(float x, float y, float size_x, float size_y, int ID) {
+            this->position.first = x;
+            this->position.second = y;
+            this->hitBox = HitBox(x, y, size_x, size_y);
             this->ID = ID;
         }
 

@@ -2,21 +2,94 @@
 
 void Projectile::draw() {
     if (HitBox::drawHitbox) this->hitBox.draw();
-    DrawRectangleGradientV(this->position.first, this->position.second, 2, 5, (ID == 1) ? WHITE : YELLOW, (ID == 1) ? YELLOW : WHITE);
+    if (ID == 0 ||ID == 1){
+        DrawRectangleGradientV(this->position.first, this->position.second, 2, 5, (ID == 1) ? WHITE : YELLOW, (ID == 1) ? YELLOW : WHITE);
+    }
+    if (ID == 2) {
+        if(timeout <=20) {
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{54, 59, 5, 10}, 
+                Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                Vector2{0, 0}, 0, WHITE);
+        }
+        else switch (timeout%6){
+            case 0:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{61, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                   break;
+            case 1:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{61, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                   break;
+            case 2:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{68, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                   break;
+            case 3:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{68, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                   break;
+            case 4:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                break;
+            case 5:
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 59, 5, 10}, 
+                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
+                   Vector2{0, 0}, 0, WHITE);
+                break;
+        }
+        
+    }
+    if (ID == 3) {
+        DrawRectangle(this->position.first, this->position.second, 4, 4, RED);
+    }
 }
 
 void Projectile::update() {
     this->hitBox.box.x = this->position.first;
     this->hitBox.box.y = this->position.second;
 
-    if (ID == 0) {
+    if (ID == 0) { // Player bullet
         this->position.first += this->speed * cos(this->angle * M_PI / 180);
         this->position.second -= this->speed * sin(this->angle * M_PI / 180);
     }
 
-    if (ID == 1) {
+    if (ID == 1) { // Enemy bullet
         this->position.first += this->speed * cos(this->angle * M_PI / 180);
         this->position.second += this->speed * sin(this->angle * M_PI / 180);
+    }
+
+    if (ID == 2) { // Missile
+        timeout++;
+        if(timeout <=7) {
+            this->position.first += (this->speed+7-timeout) * cos(this->angle * M_PI / 180);
+            this->position.second -= (this->speed+7-timeout) * sin(this->angle * M_PI / 180);
+        }
+        
+        
+        else if (timeout <= 20) {
+            this->position.first += (this->speed-5) * cos(this->angle * M_PI / 180);
+            this->position.second -= (this->speed-5) * sin(this->angle * M_PI / 180);
+        }
+        else{
+            this->position.first += (this->speed+3) * cos(this->angle * M_PI / 180);
+            this->position.second -= (this->speed+3) * sin(this->angle * M_PI / 180);
+        }
+    }
+
+    if (ID == 3) { // Shrapnel
+        this->position.first += this->speed * cos(this->angle * M_PI / 180);
+        this->position.second += this->speed * sin(this->angle * M_PI / 180);
+        timeout ++;
+        if (timeout >= 30) {
+            this->del = true;
+        }
+        
     }
 
     if (this->position.second > GetScreenHeight() || this->position.second < 0) this->del = true;
@@ -33,9 +106,9 @@ void Projectile::CleanProjectiles() {
 void Projectile::ProjectileCollision() {
     for (int i = 0; i < projectiles.size(); i++) {
         for (int j = i + 1; j < projectiles.size(); j++) {
-            if (HitBox::Collision(projectiles[i].getHitBox(), projectiles[j].getHitBox())) {
-                projectiles[i].del = true;
-                projectiles[j].del = true;
+            if (HitBox::Collision(projectiles[i].getHitBox(), projectiles[j].getHitBox()) && projectiles[i].ID != projectiles[j].ID) {
+                projectiles[i].del = projectiles[i].ID != 2;
+                projectiles[j].del = projectiles[j].ID != 2;
             }
         }
         

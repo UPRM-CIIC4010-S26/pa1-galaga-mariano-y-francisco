@@ -54,11 +54,22 @@ class Enemy {
 
                     for (Projectile& p2 : Projectile::projectiles) {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
-                            p.second->health--;
+                            p.second->health -= (p2.ID == 2) ? 5 : 1;
                             if (p.second->health > 0) {
                                 PlaySound(SoundManager::hit);
                             }
                             p2.del = true;
+                            if (p2.ID == 2) {
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 0, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 90, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 180, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 270, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 45, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 135, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 225, 3));
+                                Projectile::projectiles.push_back(Projectile(p.second->position.first, p.second->position.second, 315, 3));
+                                PlaySound(SoundManager::missileExplosion);
+                            }
                             
                         }
                     }

@@ -11,6 +11,13 @@ void Player::update() {
     this->hitBox.box.x = this->position.first;
     this->hitBox.box.y = this->position.second;
     this->cooldown--;
+    this->missileCooldown--;
+    this->missileRegen--;
+
+    if (missileRegen <= 0) {
+        if (missileCount < 5) missileCount++;
+        missileRegen = 600;
+    }
 
     if (HitBox::Collision(Background::sideWalls.first, this->hitBox)) {
         std::pair<double, double> collision = HitBox::CollisionMargins(this->hitBox, Background::sideWalls.first);
@@ -31,9 +38,10 @@ void Player::update() {
 }
 
 void Player::keyInputs() {
-    if (IsKeyDown('A')) this->position.first -= this->speed;
-    if (IsKeyDown('D')) this->position.first += this->speed;
+    if (IsKeyDown('A')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
+    if (IsKeyDown('D')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
     if (IsKeyPressed(KEY_SPACE)) this->attack();
+    if (IsKeyPressed('E')) this->missileAttack();
 }
 
 void Player::attack() {
@@ -41,5 +49,15 @@ void Player::attack() {
         Projectile::projectiles.push_back(Projectile(position.first + + this->hitBox.box.width / 2, position.second, 0));
         PlaySound(SoundManager::shoot);
         cooldown = 30;
+    }
+}
+
+void Player::missileAttack(){
+    if (missileCooldown <= 0 && missileCount > 0) {
+        Projectile::projectiles.push_back(Projectile(position.first + +(missileTube*20), position.second, 10, 20, 2));
+        PlaySound(SoundManager::missileLaunch);
+        missileCooldown = 15;
+        missileCount--;
+        missileTube = (missileTube + 1) % 2;
     }
 }
