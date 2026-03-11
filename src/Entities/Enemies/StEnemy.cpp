@@ -2,9 +2,17 @@
 
 void StEnemy::draw() {
     if (HitBox::drawHitbox) this->hitBox.draw();
-    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{2, 111, 13, 13}, 
-                                Rectangle{this->position.first, this->position.second, 30, 30}, 
-                                Vector2{0, 0}, 0, WHITE);
+        if (this->health > 3) {
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{2, 111, 13, 13}, 
+                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                Vector2{0, 0}, 0, WHITE);
+        }
+        else {
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{39, 111, 13, 13}, 
+                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                Vector2{0, 0}, 0, WHITE);
+        }
+
 }
 
 void StEnemy::update(std::pair<float, float> pos, HitBox target) {
