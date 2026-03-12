@@ -13,6 +13,12 @@ void Player::update() {
     this->cooldown--;
     this->missileCooldown--;
     this->missileRegen--;
+    this->shieldCooldown--;
+
+    if (shieldCooldown <= 0 && shieldCharge < 3) {
+        shieldCharge++;
+        shieldCooldown = 150;
+    }
 
     if (missileRegen <= 0) {
         if (missileCount < 5) missileCount++;
@@ -42,6 +48,7 @@ void Player::keyInputs() {
     if (IsKeyDown('D')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
     if (IsKeyPressed(KEY_SPACE)) this->attack();
     if (IsKeyPressed('E')) this->missileAttack();
+    if (IsKeyPressed('Q')) this->useShield();
 }
 
 void Player::attack() {
@@ -59,5 +66,13 @@ void Player::missileAttack(){
         missileCooldown = 15;
         missileCount--;
         missileTube = (missileTube + 1) % 2;
+    }
+}
+
+void Player::useShield() {
+    if (shieldCharge >= 3) {
+
+        shieldCooldown = 150;
+        shieldCharge = 0;
     }
 }

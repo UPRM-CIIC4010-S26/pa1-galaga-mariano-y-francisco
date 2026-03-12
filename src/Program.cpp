@@ -90,17 +90,43 @@ void Program::Draw() {
     background.Draw();
     if (pauseFrames <= 0 && !gameOver) player->draw();
     for (Animation& a : Animation::animations) a.draw();
-
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 65, 6, 6}, 
+                Rectangle{10.0f, GetScreenHeight() - 90.0f, 20, 20}, 
+                Vector2{0, 0}, 0, WHITE);
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
+                Rectangle{10.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+                Vector2{0, 0}, 0, WHITE);
+                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
+                Rectangle{10.0f, GetScreenHeight() - 121.0f, 20, 20}, 
+                Vector2{0, 0}, 0, WHITE);
     for (int i = 0; i < player->getMissiles(); i++) {  
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{37, 54, 15, 20}, 
-                   Rectangle{0.0f + i * 20, GetScreenHeight() - 70.0f, 30, 40}, 
-                   Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{37, 54, 15, 20}, 
+               Rectangle{0.0f + i * 20, GetScreenHeight() - 70.0f, 30, 40}, 
+               Vector2{0, 0}, 0, WHITE);
     }    
     for (int i = 0; i < lives; i++) {
-         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{0, 0, 17, 18}, 
-                   Rectangle{10.0f + i * 30, GetScreenHeight() - 30.0f, 20, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{0, 0, 17, 18}, 
+            Rectangle{10.0f + i * 30, GetScreenHeight() - 30.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
     }
+    for (int i = 0; i < player->getShield(); i++) {
+        if (i>=0){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 65, 6, 6}, 
+                Rectangle{10.0f, GetScreenHeight() - 90.0f, 20, 20}, 
+                Vector2{0, 0}, 0,WHITE);
+        }
+        if (i>=1){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 58, 6, 7}, 
+                Rectangle{10.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+                Vector2{0, 0}, 0, WHITE);
+        }
+        if (i>=2){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 53, 6, 6}, 
+                Rectangle{10.0f, GetScreenHeight() - 121.0f, 20, 20}, 
+                Vector2{0, 0}, 0, WHITE);
+        }
+    }
+
 
 
     for (Projectile p : Projectile::projectiles) p.draw();

@@ -12,6 +12,8 @@ class Player {
         int missileRegen = 600;
         int missileCooldown = 15;
         int missileTube = 0;
+        int shieldCooldown = 150;
+        int shieldCharge = 3;
 
     public:
         std::pair<float, float> position;
@@ -25,10 +27,12 @@ class Player {
 
         int getMissiles() { return missileCount; }
         void setMissiles(int count) { missileCount = count; }
+        int getShield() { return shieldCharge;}
 
         void draw();
         void update();
         void keyInputs();
         void attack();
         void missileAttack();
+        void useShield();
 };
