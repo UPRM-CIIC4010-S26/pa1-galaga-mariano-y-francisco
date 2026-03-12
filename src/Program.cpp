@@ -187,6 +187,25 @@ void Program::DrawStartup() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Galaga", (GetScreenWidth() / 2 - 237), 75, 144, WHITE);
     DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
+    DrawText("Move: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 -120, 30, WHITE);
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{98, 53, 16, 19}, // A button
+                Rectangle{(GetScreenWidth() / 2) - 310.0f, (GetScreenHeight() / 2) - 135.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE); 
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{115, 53, 16, 19}, // D button
+                Rectangle{(GetScreenWidth() / 2) - 255.0f, (GetScreenHeight() / 2) - 135.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText("Missiles: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 - 50, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{132, 53, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) - 270.0f, (GetScreenHeight() / 2) - 65.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText("Shield: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 + 20, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{149, 53, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) - 300.0f, (GetScreenHeight() / 2) + 5.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText("Shoot: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 + 90, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{166, 53, 80, 19}, 
+                Rectangle{(GetScreenWidth() / 2) - 300.0f, (GetScreenHeight() / 2) + 75.0f, 250, 59}, 
+                Vector2{0, 0}, 0, WHITE);
 }
 
 void Program::DrawPauseScreen() {
