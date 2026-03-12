@@ -10,6 +10,7 @@ class SoundManager {
     static inline Sound shoot;
     static inline Sound missileLaunch;
     static inline Sound missileExplosion;
+    static inline Sound shieldDeploy;
 
     static void Load() {
         attack = LoadSound("audio/attack.mp3");
@@ -19,6 +20,7 @@ class SoundManager {
         shoot = LoadSound("audio/shoot.mp3");
         missileLaunch = LoadSound("audio/missileLaunch.mp3");
         missileExplosion = LoadSound("audio/missileExplosion.mp3");
+        shieldDeploy = LoadSound("audio/shieldDeploy.mp3");
     }
 
     static void Unload() {
@@ -29,5 +31,6 @@ class SoundManager {
         UnloadSound(shoot);
         UnloadSound(missileLaunch);
         UnloadSound(missileExplosion);
+        UnloadSound(shieldDeploy);
     }
 };

@@ -17,7 +17,7 @@ void Player::update() {
 
     if (shieldCooldown <= 0 && shieldCharge < 3) {
         shieldCharge++;
-        shieldCooldown = 150;
+        shieldCooldown = 50;
     }
 
     if (missileRegen <= 0) {
@@ -71,8 +71,9 @@ void Player::missileAttack(){
 
 void Player::useShield() {
     if (shieldCharge >= 3) {
-
-        shieldCooldown = 150;
+        Projectile::projectiles.push_back(Projectile(position.first-this->hitBox.box.width/2, position.second-10, 60, 10, 4));
+        PlaySound(SoundManager::shieldDeploy);
+        shieldCooldown = 50;
         shieldCharge = 0;
     }
 }

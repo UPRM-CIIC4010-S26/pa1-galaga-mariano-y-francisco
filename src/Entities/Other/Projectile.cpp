@@ -48,6 +48,11 @@ void Projectile::draw() {
     if (ID == 3) {
         DrawRectangle(this->position.first, this->position.second, 4, 4, RED);
     }
+    if (ID == 4) {
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 40, 24, 5}, 
+                Rectangle{this->position.first, this->position.second, 60, 15}, 
+                Vector2{0, 0}, 0, WHITE);
+    }
 }
 
 void Projectile::update() {
@@ -92,6 +97,17 @@ void Projectile::update() {
         
     }
 
+    if (ID == 4) { // Shield
+        timeout++;
+        if (timeout <= 15) {
+            this->position.first += (this->speed-2) * cos(this->angle * M_PI / 180);
+            this->position.second -= (this->speed-2) * sin(this->angle * M_PI / 180);
+        }
+        if (timeout >= 30) {
+            this->del = true;
+        }
+    }
+
     if (this->position.second > GetScreenHeight() || this->position.second < 0) this->del = true;
 }
 
@@ -107,8 +123,8 @@ void Projectile::ProjectileCollision() {
     for (int i = 0; i < projectiles.size(); i++) {
         for (int j = i + 1; j < projectiles.size(); j++) {
             if (HitBox::Collision(projectiles[i].getHitBox(), projectiles[j].getHitBox()) && projectiles[i].ID != projectiles[j].ID) {
-                projectiles[i].del = projectiles[i].ID != 2;
-                projectiles[j].del = projectiles[j].ID != 2;
+                projectiles[i].del = projectiles[i].ID != 2 && projectiles[i].ID != 4;
+                projectiles[j].del = projectiles[j].ID != 2 && projectiles[j].ID != 4;
             }
         }
         

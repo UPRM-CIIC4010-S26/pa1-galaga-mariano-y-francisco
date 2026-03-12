@@ -28,6 +28,7 @@ class Player {
         int getMissiles() { return missileCount; }
         void setMissiles(int count) { missileCount = count; }
         int getShield() { return shieldCharge;}
+        void setShield(int charge) { shieldCharge = charge; }
 
         void draw();
         void update();

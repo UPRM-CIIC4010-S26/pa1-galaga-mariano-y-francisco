@@ -53,7 +53,8 @@ void Program::Update() {
                 p.second->health = 0;
                 pauseFrames = 120;
                 if (lives > 1) {
-                    player->setMissiles(2);
+                    player->setMissiles(std::max(player->getMissiles(), 2));
+                    player->setShield(3);
                 }
                 lives--;
             }
@@ -236,7 +237,10 @@ void Program::PlayerReset() {
     Projectile::projectiles.clear();
     player->position.first = GetScreenWidth() / 2 - 15;
     pauseFrames = 120;
-    if (lives > 1) player->setMissiles(2);
+    if (lives > 1) {
+        player->setMissiles(std::max(player->getMissiles(), 2));
+        player->setShield(3);
+    }
     lives--;
 }
 

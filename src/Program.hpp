@@ -21,7 +21,6 @@ class Program {
         int pauseFrames = 0;
         int score = 0;
         int newlive = 1000;
-
         bool startup = true;
         bool paused = false;
         bool gameOver = false;
