@@ -132,8 +132,7 @@ void Program::Draw() {
 
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
-
-    DrawText(TextFormat("Score: %i", score), 10, 10, 24, WHITE);
+    if (!gameOver) DrawText(TextFormat("Score: %i", score), 10, 10, 24, WHITE);
 
     if (startup) DrawStartup();
     if (paused) DrawPauseScreen();
@@ -200,6 +199,7 @@ void Program::DrawGameOver() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Game Over", (GetScreenWidth() / 2) - 380, 50, 144, WHITE);
     DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
+    DrawText(TextFormat("Final Score: %i", score), (GetScreenWidth() / 2) - 100, GetScreenHeight() / 2 + 40, 40, WHITE);
 }
 
 void Program::KeyInputs() {

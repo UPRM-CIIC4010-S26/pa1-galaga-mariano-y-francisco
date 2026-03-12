@@ -24,6 +24,13 @@ class StdEnemy : public Enemy {
             this->scoreValue = 50;
         }
 
+        StdEnemy(float x, float y, bool newSpawn, int variant) : Enemy(x, y){
+            this->cooldown = GetRandomValue(300, 1380);
+            this->health = 2+variant;
+            this->spawning = newSpawn;
+            this->scoreValue = 50+(variant*10);
+        }
+
         void draw() override;
         void update(std::pair<float, float> pos, HitBox target) override;
         void attack(HitBox target) override;

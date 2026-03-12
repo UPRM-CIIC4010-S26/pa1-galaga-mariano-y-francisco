@@ -5,7 +5,11 @@ void StdEnemy::draw() {
     switch(this->type) {
         case 1:
             if (!frame) {
-                if (this->health > 1) {
+                if (this->health > 2) {
+                    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{38, 75, 15, 12}, 
+                                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                                Vector2{0, 0}, 0, WHITE);
+                }else if (this->health > 1) {
                     DrawTexturePro(ImageManager::SpriteSheet, Rectangle{2, 75, 15, 12}, 
                                 Rectangle{this->position.first, this->position.second, 30, 30}, 
                                 Vector2{0, 0}, 0, WHITE);
@@ -15,7 +19,11 @@ void StdEnemy::draw() {
                                 Vector2{0, 0}, 0, WHITE);
                 }
             } else {
-                if (this->health > 1) {
+                if (this->health >2){
+                    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{56, 75, 15, 12}, 
+                                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                                Vector2{0, 0}, 0, WHITE);
+                }else if (this->health > 1) {
                     DrawTexturePro(ImageManager::SpriteSheet, Rectangle{20, 75, 15, 12}, 
                                 Rectangle{this->position.first, this->position.second, 30, 30}, 
                                 Vector2{0, 0}, 0, WHITE);
@@ -29,7 +37,11 @@ void StdEnemy::draw() {
 
         case 2:
             if (!frame) {
-                if (this->health > 1) {
+                if (this->health > 2){
+                    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{38, 93, 15, 12}, 
+                                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                                Vector2{0, 0}, 0, WHITE);
+                }else if (this->health > 1) {
                     DrawTexturePro(ImageManager::SpriteSheet, Rectangle{2, 93, 15, 12}, 
                                 Rectangle{this->position.first, this->position.second, 30, 30}, 
                                 Vector2{0, 0}, 0, WHITE);
@@ -39,7 +51,11 @@ void StdEnemy::draw() {
                                 Vector2{0, 0}, 0, WHITE);
                 }
             } else {
-                if (this->health > 1) {
+                if (this->health > 2){
+                    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{56, 93, 15, 12}, 
+                                Rectangle{this->position.first, this->position.second, 30, 30}, 
+                                Vector2{0, 0}, 0, WHITE);
+                }else if (this->health > 1) {
                     DrawTexturePro(ImageManager::SpriteSheet, Rectangle{20, 93, 15, 12}, 
                                 Rectangle{this->position.first, this->position.second, 30, 30}, 
                                 Vector2{0, 0}, 0, WHITE);
