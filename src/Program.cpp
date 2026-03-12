@@ -142,7 +142,7 @@ void Program::Draw() {
         
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
-    int difficulty = std::max(std::min(score / 1000, 10), 2);
+    int difficulty = std::max(std::min(score / 1000, 5), 2);
     respawnCooldown -= difficulty;
     if (respawnCooldown <= 0) {
         respawnCooldown = 900;
@@ -153,7 +153,8 @@ void Program::ManageEnemyRespawns() {
                 if (eType == 1) {
                     p.second = new StEnemy(GetScreenWidth() / 2 - 15, 0, true);
                 } else {
-                    p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true);
+                    if (difficulty >= 5) p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true, 1);
+                    else p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true);
                     respawnCooldown /= 2;
                 }
 
