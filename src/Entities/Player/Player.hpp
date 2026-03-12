@@ -14,21 +14,27 @@ class Player {
         int missileTube = 0;
         int shieldCooldown = 150;
         int shieldCharge = 3;
-
+        int Iframes = 0;
+        int playerNumber = 1;
+        bool disabled = false;
     public:
         std::pair<float, float> position;
         HitBox hitBox;
 
-        Player(float x, float y) {
+        Player(float x, float y, int playerNum) {
             this->position.first = x;
             this->position.second = y;
+            this->playerNumber = playerNum;
             this->hitBox = HitBox(x, y, 30, 30);
         }
-
+        int getIframes() { return Iframes; }
+        void setIframes(int frames) { Iframes = frames; }
         int getMissiles() { return missileCount; }
         void setMissiles(int count) { missileCount = count; }
         int getShield() { return shieldCharge;}
         void setShield(int charge) { shieldCharge = charge; }
+        bool isDisabled() { return disabled; }
+        void setDisabled(bool disable) { disabled = disable;}
 
         void draw();
         void update();
