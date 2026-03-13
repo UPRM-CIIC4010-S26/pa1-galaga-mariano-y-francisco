@@ -17,6 +17,8 @@ class Player {
         int Iframes = 0;
         int playerNumber = 1;
         bool disabled = false;
+        int lives = 3;
+
     public:
         std::pair<float, float> position;
         HitBox hitBox;
@@ -35,6 +37,8 @@ class Player {
         void setShield(int charge) { shieldCharge = charge; }
         bool isDisabled() { return disabled; }
         void setDisabled(bool disable) { disabled = disable;}
+        int getLives() {return lives;}
+        void setLives(int life) {this->lives = life;}
 
         void draw();
         void update();

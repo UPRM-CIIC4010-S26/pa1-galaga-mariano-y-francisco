@@ -18,7 +18,21 @@ void Player::draw() {
                            Vector2{0, 0}, 0, WHITE);
             }
             break;
-    }
+        case 3:
+        if (!(Iframes %4 ==0 && Iframes > 0)){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{216, 91, 17, 18}, 
+                           Rectangle{this->position.first, this->position.second, 30, 30}, 
+                           Vector2{0, 0}, 0, WHITE);
+            }
+            break;
+        case 4:
+        if (!(Iframes %4 ==0 && Iframes > 0)){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{234, 91, 17, 18}, 
+                           Rectangle{this->position.first, this->position.second, 30, 30}, 
+                           Vector2{0, 0}, 0, WHITE);
+            }
+            break;
+        }
 }
 
 
@@ -64,18 +78,32 @@ void Player::keyInputs() {
     if (disabled) return;
     switch (playerNumber){
         case 1:
-            if (IsKeyDown('A')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
-            if (IsKeyDown('D')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
-            if (IsKeyPressed(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('E')) this->missileAttack();
-            if (IsKeyPressed('Q')) this->useShield();
+            if (IsKeyDown('Q')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
+            if (IsKeyDown('E')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
+            if (IsKeyDown(KEY_SPACE)) this->attack();
+            if (IsKeyPressed('R')) this->missileAttack();
+            if (IsKeyPressed('W')) this->useShield();
             break;
         case 2:
-            if (IsKeyDown('J')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
-            if (IsKeyDown('L')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
-            if (IsKeyPressed(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('O')) this->missileAttack();
-            if (IsKeyPressed('U')) this->useShield();
+            if (IsKeyDown('I')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
+            if (IsKeyDown('P')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
+            if (IsKeyDown(KEY_SPACE)) this->attack();
+            if (IsKeyPressed('U')) this->missileAttack();
+            if (IsKeyPressed('O')) this->useShield();
+            break;
+        case 3:
+            if (IsKeyDown('Z')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
+            if (IsKeyDown('C')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
+            if (IsKeyDown(KEY_SPACE)) this->attack();
+            if (IsKeyPressed('V')) this->missileAttack();
+            if (IsKeyPressed('X')) this->useShield();
+            break;
+        case 4:
+            if (IsKeyDown(',')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
+            if (IsKeyDown('/')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
+            if (IsKeyDown(KEY_SPACE)) this->attack();
+            if (IsKeyPressed('M')) this->missileAttack();
+            if (IsKeyPressed('.')) this->useShield();
             break;
     }
 }
@@ -93,7 +121,7 @@ void Player::attack() {
 void Player::missileAttack(){
     if (disabled) return;
     if (missileCooldown <= 0 && missileCount > 0) {
-        Projectile::projectiles.push_back(Projectile(position.first + +(missileTube*20), position.second, 10, 20, 2));
+        Projectile::projectiles.push_back(Projectile(position.first + +(missileTube*20), position.second, 10, 20, 2,playerNumber));
         PlaySound(SoundManager::missileLaunch);
         missileCooldown = 15;
         missileCount--;
@@ -104,7 +132,7 @@ void Player::missileAttack(){
 void Player::useShield() {
     if (disabled) return;
     if (shieldCharge >= 3) {
-        Projectile::projectiles.push_back(Projectile(position.first-this->hitBox.box.width/2, position.second-10, 60, 10, 4));
+        Projectile::projectiles.push_back(Projectile(position.first-this->hitBox.box.width/2, position.second-10, 60, 10, 4,playerNumber));
         PlaySound(SoundManager::shieldDeploy);
         shieldCooldown = 50;
         shieldCharge = 0;

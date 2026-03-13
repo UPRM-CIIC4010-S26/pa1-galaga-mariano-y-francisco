@@ -6,52 +6,48 @@ void Projectile::draw() {
         DrawRectangleGradientV(this->position.first, this->position.second, 2, 5, (ID == 1) ? WHITE : YELLOW, (ID == 1) ? YELLOW : WHITE);
     }
     if (ID == 2) {
-        if(timeout <=20) {
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{54, 59, 5, 10}, 
-                Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                Vector2{0, 0}, 0, WHITE);
+        switch (variant){
+        case 1: 
+            missile1();
+            break;
+        case 2:
+            missile2();
+            break;
+        case 3:
+            missile3();
+            break;
+        case 4:
+            missile4();
+            break;
         }
-        else switch (timeout%6){
-            case 0:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{61, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                   break;
-            case 1:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{61, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                   break;
-            case 2:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{68, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                   break;
-            case 3:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{68, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                   break;
-            case 4:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                break;
-            case 5:
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 59, 5, 10}, 
-                   Rectangle{this->position.first, this->position.second+8, 10, 20}, 
-                   Vector2{0, 0}, 0, WHITE);
-                break;
-        }
-        
+
     }
     if (ID == 3) {
         DrawRectangle(this->position.first, this->position.second, 4, 4, RED);
     }
     if (ID == 4) {
-        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 40, 24, 5}, 
+        switch(variant){
+            case 1:
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{75, 40, 25, 6}, 
                 Rectangle{this->position.first, this->position.second, 60, 15}, 
                 Vector2{0, 0}, 0, WHITE);
+                break;
+            case 2:
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{102, 40, 25, 6}, 
+                Rectangle{this->position.first, this->position.second, 60, 15}, 
+                Vector2{0, 0}, 0, WHITE);
+                break;
+            case 3:
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{156, 40, 25, 6}, 
+                Rectangle{this->position.first, this->position.second, 60   , 15}, 
+                Vector2{0, 0}, 0, WHITE);
+                break;
+            case 4:
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{129, 40, 25, 6}, 
+                Rectangle{this->position.first, this->position.second, 60, 15}, 
+                Vector2{0, 0}, 0, WHITE);
+                break;
+            }
     }
 }
 

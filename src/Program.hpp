@@ -14,14 +14,16 @@ class Program {
         Background background = Background();
         Player* player;
         Player* player2;
+        Player* player3;
+        Player* player4;
         int respawnCooldown = 1080;
         int respawns = 0;
         int count = 0;
         int delay = 0;
-        int lives = 3;
-        int lives2 = 3;
-        int playerCount = 0;
-        int maxPlayerCount = 0;
+        bool players1 = false;
+        bool players2 = false;
+        bool players3 = false;
+        bool players4 = false;
 
 
         int pauseFrames = 0;
@@ -36,13 +38,21 @@ class Program {
             switch (identifier) {
                 case 1:
                     this->player = newPlayer;
+                    if (!players1) players1 = true;
                     break;
                 case 2:
                     this->player2 = newPlayer;
+                    if (!players2) players2 = true;
+                    break;
+                case 3:
+                    this->player3 = newPlayer;
+                    if (!players3) players3 = true;
+                    break;
+                case 4:
+                    this->player4 = newPlayer;
+                    if (!players4) players4 = true;
                     break;
             }
-            playerCount++;
-            maxPlayerCount++;
             newlive += 1000;
         }
         Program();

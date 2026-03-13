@@ -20,7 +20,7 @@ int main ()
 }
 	bool confirm = false;
 
-	Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 15, GetScreenHeight() * 0.75f,1), 1);
+	Galaga.addPlayer(new Player((GetScreenWidth() / 2), GetScreenHeight() * 0.75f,1), 1);
 	while (!confirm && !WindowShouldClose())
 	{
 		BeginDrawing();
@@ -30,6 +30,17 @@ int main ()
 		EndDrawing();
 		if (IsKeyPressed(KEY_TWO)){
 			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 60, GetScreenHeight() * 0.75f,2), 2);
+			confirm = true;
+		}
+		if (IsKeyPressed(KEY_THREE)){
+			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 60, GetScreenHeight() * 0.75f,2), 2);
+			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 120, GetScreenHeight() * 0.75f,3), 3);
+			confirm = true;
+		}
+		if (IsKeyPressed(KEY_FOUR)){
+			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 60, GetScreenHeight() * 0.75f,2), 2);
+			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 120, GetScreenHeight() * 0.75f,3), 3);
+			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 180, GetScreenHeight() * 0.75f,4), 4);
 			confirm = true;
 		}
 	}

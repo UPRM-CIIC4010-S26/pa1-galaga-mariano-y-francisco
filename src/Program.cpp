@@ -36,18 +36,14 @@ void Program::Update() {
     pauseFrames = std::max(pauseFrames - 1, 0);
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) {
-        switch (GetRandomValue(0, playerCount-1)) {
-        case 0:
-            Enemy::ManageEnemies(player->hitBox);
-            break;
-        case 1:
-        Enemy::ManageEnemies(player2->hitBox);
-        break;
-        }
+
+        Enemy::ManageEnemies(player->hitBox);
         StdEnemy::attackReset();
         ManageEnemyRespawns();
         player->update();
-        if (playerCount > 1) player2->update();
+        if (players2) player2->update();
+        if (players3) player3->update();
+        if (players4) player4->update();
 
         for (std::pair<std::pair<float, float>, Enemy*> p : Enemy::enemies) {
             if (p.second && HitBox::Collision(player->hitBox, p.second->hitBox) && player->getIframes() <= 0) {
@@ -56,154 +52,270 @@ void Program::Update() {
                 );
 
                 PlaySound(SoundManager::gameOver);
-                if(playerCount == 1)Projectile::projectiles.clear();
-                if(playerCount == 1)player->position.first = GetScreenWidth() / 2 - 15;
+                if(!players2)Projectile::projectiles.clear();
+                if(!players2)player->position.first = GetScreenWidth() / 2 - 15;
                 p.second->health = 0;
-                if(playerCount == 1) pauseFrames = 120;
-                if (lives > 1) {
+                if(!players2) pauseFrames = 120;
+                if (player->getLives() > 1) {
                     player->setMissiles(std::max(player->getMissiles(), 2));
                     player->setShield(3);
                 }
                 player->setIframes(60);
-                lives--;
+                player->setLives(player->getLives()-1);
             }
-            if(playerCount > 1) if (p.second && HitBox::Collision(player2->hitBox, p.second->hitBox)&& player2->getIframes()<=0) {
+            if(players2) if (p.second && HitBox::Collision(player2->hitBox, p.second->hitBox)&& player2->getIframes()<=0) {
                 Animation::animations.push_back(
                     Animation(player2->position.first, player2->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet)
                 );
 
                 PlaySound(SoundManager::gameOver);
                 p.second->health = 0;
-                if (lives2 > 1) {
+                if (player2->getLives() > 1) {
                     player2->setMissiles(std::max(player2->getMissiles(), 2));
                     player2->setShield(3);
                 }
                 player2->setIframes(60);
-                lives2--;
+                player2->setLives(player->getLives()-1);
+            if (players3) if (p.second && HitBox::Collision(player3->hitBox, p.second->hitBox)&& player3->getIframes()<=0) {
+                Animation::animations.push_back(
+                    Animation(player3->position.first, player3->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet)
+                );
+
+                PlaySound(SoundManager::gameOver);
+                p.second->health = 0;
+                if (player3->getLives() > 1) {
+                    player3->setMissiles(std::max(player3->getMissiles(), 2));
+                    player3->setShield(3);
+                }
+                player3->setIframes(60);
+                player3->setLives(player->getLives()-1);
             }
+            if (players4) if (p.second && HitBox::Collision(player4->hitBox, p.second->hitBox)&& player4->getIframes()<=0) {
+                Animation::animations.push_back(
+                    Animation(player4->position.first, player4->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet)
+                );
+
+                PlaySound(SoundManager::gameOver);
+                p.second->health = 0;
+                if (player4->getLives() > 1) {
+                    player4->setMissiles(std::max(player4->getMissiles(), 2));
+                    player4->setShield(3);
+                }
+                player4->setIframes(60);
+                player4->setLives(player->getLives()-1);
+            }
+        }
         }
 
         for (Projectile& p : Projectile::projectiles) { 
             if (HitBox::Collision(player->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3) && player->getIframes()<=0) {
                 PlayerReset(1);
             }
-            if (playerCount > 1) if (HitBox::Collision(player2->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3) && player2->getIframes()<=0) {
+            if (player2) if (HitBox::Collision(player2->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3) && player2->getIframes()<=0) {
                 PlayerReset(2);
             }
-            p.update(); 
+            if (players3) if (HitBox::Collision(player3->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3) && player3->getIframes()<=0) {
+                PlayerReset(3);
+            }
+            if (players4) if (HitBox::Collision(player4->hitBox, p.getHitBox()) && (p.ID == 1 || p.ID == 3) && player4->getIframes()<=0) {
+                PlayerReset(4);
+            }
+
+            p.update();       
         }
         for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) 
         if (p.second && p.second->health <= 0) {
             score += p.second->scoreValue;
             p.second = nullptr;
         }
-        if (playerCount >1) if ((lives <= 0 && lives2 <= 0) && pauseFrames <= 0) gameOver = true;
-        if(playerCount == 1) if (lives <= 0 && pauseFrames <= 0) gameOver = true;
+        if(players4) if ((player->getLives() <= 0 && player2->getLives() <= 0 && player3->getLives() <= 0 && player4->getLives() <= 0) && pauseFrames <= 0) gameOver = true;
+        if(players3&&!players4) if ((player->getLives() <= 0 && player2->getLives() <= 0 && player3->getLives() <= 0) && pauseFrames <= 0) gameOver = true;
+        if(players2&&!players3) if ((player->getLives() <= 0 && player2->getLives() <= 0) && pauseFrames <= 0) gameOver = true;
+        if(!players2) if (player->getLives() <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
         Projectile::ProjectileCollision();
-        if (playerCount >1){
-        if (lives <= 0) player->setDisabled(true);
-        if (lives2 <= 0) player2->setDisabled(true);
-        if (lives > 0&&player->isDisabled()) player->setDisabled(false),player->setIframes(300),player->position.first = (GetScreenWidth() / 2) - 15, player->position.second = GetScreenHeight() * 0.75f;
-        if (lives2 > 0&&player2->isDisabled()) player2->setDisabled(false),player2->setIframes(300),player2->position.first = (GetScreenWidth() / 2) - 60, player2->position.second = GetScreenHeight() * 0.75f;
-        }
+        if (players2){
+        if (player->getLives() <= 0) player->setDisabled(true);
+        if (players2) if ( player2->getLives()<= 0) player2->setDisabled(true);
+        if (players3) if ( player3->getLives()<= 0) player3->setDisabled(true);
+        if (players4) if ( player4->getLives()<= 0) player4->setDisabled(true);
+
+        if (player->getLives() > 0 && player->isDisabled()) player->setDisabled(false),player->setIframes(300),player->position.first = (GetScreenWidth() / 2), player->position.second = GetScreenHeight() * 0.75f;
+        if (players2) if (player2->getLives() > 0 &&player2->isDisabled()) player2->setDisabled(false),player2->setIframes(300),player2->position.first = (GetScreenWidth() / 2) - 60, player2->position.second = GetScreenHeight() * 0.75f;
+        if (players3) if (player3->getLives() > 0 &&player3->isDisabled()) player3->setDisabled(false),player3->setIframes(300),player3->position.first = (GetScreenWidth() / 2) - 120, player3->position.second = GetScreenHeight() * 0.75f;
+        if (players4) if (player4->getLives() > 0 &&player4->isDisabled()) player4->setDisabled(false),player4->setIframes(300),player4->position.first = (GetScreenWidth() / 2) - 180, player4->position.second = GetScreenHeight() * 0.75f;
+    }
 
         if (score >= newlive) {
-            if (lives < 5){
-                lives++;
-            }
-            if (lives2 < 5 && playerCount > 1){
-                lives2++;
-            }
-            newlive += (1000*playerCount);
+            if (player->getLives() < 5)player->setLives(player->getLives()+1);
+            if (players2) if (player2->getLives() < 5)player2->setLives(player2->getLives()+1);
+            if (players3) if (player3->getLives() < 5)player3->setLives(player3->getLives()+1);
+            if (players4) if (player4->getLives() < 5)player4->setLives(player4->getLives()+1);
+            newlive += (1000);
         }
-    }
+    
 }
-
+}
 
 void Program::Draw() {
     background.Draw();
     if (pauseFrames <= 0 && !gameOver) player->draw();
-    if (pauseFrames <= 0 && !gameOver && playerCount > 1) player2->draw();
+    if (pauseFrames <= 0 && !gameOver && players2) player2->draw();
+    if (pauseFrames <= 0 && !gameOver && players3) player3->draw();
+    if (pauseFrames <= 0 && !gameOver && players4) player4->draw();
     for (Animation& a : Animation::animations) a.draw();
                 DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 65, 6, 6}, 
-                Rectangle{10.0f, GetScreenHeight() - 90.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 55.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
                 DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
-                Rectangle{10.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 72.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
                 DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
-                Rectangle{10.0f, GetScreenHeight() - 121.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 86.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
-    for (int i = 0; i < lives; i++) {
+    for (int i = 0; i < player->getLives(); i++) {
         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{0, 0, 17, 18}, 
             Rectangle{10.0f + i * 30, GetScreenHeight() - 30.0f, 20, 20}, 
             Vector2{0, 0}, 0, WHITE);
         }
     for (int i = 0; i < player->getMissiles(); i++) {  
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{37, 54, 15, 20}, 
-               Rectangle{0.0f + i * 20, GetScreenHeight() - 70.0f, 30, 40}, 
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{42, 57, 7, 11}, 
+               Rectangle{35.0f + i * 20, GetScreenHeight() - 60.0f, 14, 22}, 
                Vector2{0, 0}, 0, WHITE);
     }
-        for (int i = 0; i < player->getShield(); i++) {
+    for (int i = 0; i < player->getShield(); i++) {
         if (i>=0){
             DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 65, 6, 6}, 
-                Rectangle{10.0f, GetScreenHeight() - 90.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 55.0f, 20, 20},
                 Vector2{0, 0}, 0,WHITE);
         }
         if (i>=1){
             DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 58, 6, 7}, 
-                Rectangle{10.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 72.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
         }
         if (i>=2){
             DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 53, 6, 6}, 
-                Rectangle{10.0f, GetScreenHeight() - 121.0f, 20, 20}, 
+                Rectangle{10.0f, GetScreenHeight() - 86.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
         }    
     }
-    if (playerCount > 1) {
+    if (players2) {
         for (int i = 0; i < player2->getMissiles(); i++) {  
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{37, 54, 15, 20}, 
-               Rectangle{GetScreenWidth() - 35.0f - i * 20, GetScreenHeight() - 70.0f, 30, 40}, 
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{177, 76, 7, 11}, 
+               Rectangle{GetScreenWidth() - 50.0f - i * 20, GetScreenHeight() - 60.0f, 14, 22}, 
                Vector2{0, 0}, 0, WHITE);}
-    for (int i = 0; i < lives2; i++) {
+
+        for (int i = 0; i < player2->getLives(); i++) {
         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{0, 18, 17, 18}, 
             Rectangle{GetScreenWidth()-30.0f - i * 30, GetScreenHeight() - 30.0f, 20, 20}, 
             Vector2{0, 0}, 0, WHITE);
         }
-    for (int i = 0; i < player2->getShield(); i++) {
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 65, 6, 6}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 55.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 72.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 86.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+        for (int i = 0; i < player2->getShield(); i++) {
         if (i>=0){
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 65, 6, 6}, 
-                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 90.0f, 20, 20}, 
-                Vector2{0, 0}, 0,WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{260, 87, 6, 6}, 
+            Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 55.0f, 20, 20}, 
+            Vector2{0, 0}, 0,WHITE);
         }
         if (i>=1){
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 58, 6, 7}, 
-                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{260, 80, 6, 7}, 
+                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 72.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
         }
         if (i>=2){
-            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{83, 53, 6, 6}, 
-                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 121.0f, 20, 20},
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{260, 75, 6, 6}, 
+                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 86.0f, 20, 20},
                 Vector2{0, 0}, 0, WHITE);
             }
         }                
+
+    }
+    if (players3) {
+    for (int i = 0; i < player3->getMissiles(); i++) {  
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{177, 92, 7, 11}, 
+               Rectangle{35.0f + i * 20, GetScreenHeight() - 200.0f, 14, 22}, 
+               Vector2{0, 0}, 0, WHITE);}
+
+    for (int i = 0; i < player3->getLives(); i++) {
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{217, 91, 17, 18}, 
+            Rectangle{10.0f + i * 30, GetScreenHeight() - 170.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+        }
+
             DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 65, 6, 6}, 
-                Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 90.0f, 20, 20}, 
+            Rectangle{10.0f, GetScreenHeight() - 195.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
+            Rectangle{10.0f, GetScreenHeight() - 212.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
+            Rectangle{10.0f, GetScreenHeight() - 226.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+    for (int i = 0; i < player3->getShield(); i++) {
+        if (i>=0){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{276, 87, 6, 6}, 
+            Rectangle{10.0f, GetScreenHeight() - 195.0f, 20, 20}, 
+            Vector2{0, 0}, 0,WHITE);
+        }
+        if (i>=1){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{276, 80, 6, 7}, 
+                Rectangle{10.0f, GetScreenHeight() - 212.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
-                Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 107.0f, 20, 20}, 
+        }
+        if (i>=2){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{276, 75, 6, 6}, 
+                Rectangle{10.0f, GetScreenHeight() - 226.0f, 20, 20},
                 Vector2{0, 0}, 0, WHITE);
-                DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
-                Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 121.0f, 20, 20}, 
+            }
+        }                
+    }
+    if (players4) {
+    for (int i = 0; i < player4->getMissiles(); i++) {  
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{218, 77, 7, 11}, 
+               Rectangle{GetScreenWidth() - 50.0f - i * 20, GetScreenHeight() - 200.0f, 14, 22}, 
+               Vector2{0, 0}, 0, WHITE);}
+    for (int i = 0; i < player4->getLives(); i++) {
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{234, 91, 17, 18}, 
+            Rectangle{GetScreenWidth()-30.0f - i * 30, GetScreenHeight() - 170.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+        }
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 65, 6, 6}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 195.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 58, 6, 7}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 212.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{90, 53, 6, 6}, 
+            Rectangle{GetScreenWidth() - 30.0f, GetScreenHeight() - 226.0f, 20, 20}, 
+            Vector2{0, 0}, 0, WHITE);
+    for (int i = 0; i < player4->getShield(); i++) {
+        if (i>=0){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{268, 87, 6, 6}, 
+            Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 195.0f, 20, 20}, 
+            Vector2{0, 0}, 0,WHITE);
+        }
+        if (i>=1){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{268, 80, 6, 7}, 
+                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 212.0f, 20, 20}, 
                 Vector2{0, 0}, 0, WHITE);
-                }
+        }
+        if (i>=2){
+            DrawTexturePro(ImageManager::SpriteSheet, Rectangle{268, 75, 6, 6}, 
+                Rectangle{GetScreenWidth() -30.0f, GetScreenHeight() - 226.0f, 20, 20},
+                Vector2{0, 0}, 0, WHITE);
+            }
+        }                
     
-
-
-
-
+    }
 
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
@@ -289,6 +401,8 @@ void Program::PlayerSelectScreen(){
     DrawText("Select Player Count", (GetScreenWidth() / 2) - 200, 400, 48, WHITE);
     DrawText("Press 1 for Single Player", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 - 20, 24, WHITE);
     DrawText("Press 2 for Two Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 20, 24, RED);
+    DrawText("Press 3 for Three Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 60, 24, BLUE);
+    DrawText("Press 4 for Four Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 100, 24, YELLOW);
 }
 
 void Program::DrawPauseScreen() {
@@ -305,19 +419,19 @@ void Program::DrawGameOver() {
 }
 
 void Program::KeyInputs() {
-    if ((!gameOver && !startup && IsKeyPressed('P')) || (paused && IsKeyPressed(KEY_ENTER))) paused = !paused;
-    if (!paused && !startup && IsKeyPressed('B')) gameOver = !gameOver;
-    if (!gameOver && !paused && IsKeyPressed('V')) startup = !startup;
-    if (IsKeyPressed('M')) HitBox::drawHitbox = !HitBox::drawHitbox;
+    if ((!gameOver && !startup && IsKeyPressed('D')) || (paused && IsKeyPressed(KEY_ENTER))) paused = !paused;
+    if (!paused && !startup && IsKeyPressed('S')) gameOver = !gameOver;
+    if (!gameOver && !paused && IsKeyPressed('A')) startup = !startup;
+    if (IsKeyPressed('H')) HitBox::drawHitbox = !HitBox::drawHitbox;
     if (IsKeyPressed('G')) {
         score += 500;
         std::cout << "Score increased by 500. Current score: " << score << std::endl;
     }
-    if (IsKeyPressed('N')) {
+    if (IsKeyPressed('F')) {
         player->setMissiles(player->getMissiles() + 1);
-        std::cout << "Missile added. Current missiles: " << player->getMissiles() << std::endl;
-        if (playerCount>1) player2->setMissiles(player2->getMissiles() + 1);
-        std::cout << "Missile added. Current missiles: " << player2->getMissiles() << std::endl;
+        if (players2) player2->setMissiles(player2->getMissiles() + 1);
+        if (players3) player3->setMissiles(player3->getMissiles() + 1);
+        if (players4) player4->setMissiles(player4->getMissiles() + 1);        
     }
     if (gameOver && IsKeyPressed(KEY_ENTER)) {
         gameOver = false;
@@ -329,8 +443,10 @@ void Program::KeyInputs() {
         startup = false;
     }
 
-    if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs(), player2->keyInputs();
-   
+    if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs();
+    if (!startup && !paused && !gameOver && pauseFrames <= 0 && players2) player2->keyInputs();
+    if (!startup && !paused && !gameOver && pauseFrames <= 0 && players3) player3->keyInputs();
+    if (!startup && !paused && !gameOver && pauseFrames <= 0 && players4) player4->keyInputs();       
 }
 
 void Program::PlayerReset(int identifier) {
@@ -343,27 +459,51 @@ void Program::PlayerReset(int identifier) {
     Animation::animations.push_back(
         Animation(player2->position.first, player2->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet));
     break;
+        case 3:
+    Animation::animations.push_back(
+        Animation(player3->position.first, player3->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet));
+    break;
+        case 4:
+    Animation::animations.push_back(
+        Animation(player4->position.first, player4->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet));
+    break;
 }
     PlaySound(SoundManager::gameOver);
-    if(playerCount == 1) Projectile::projectiles.clear();
+    if(!players2) Projectile::projectiles.clear();
     switch (identifier) {
         case 1:
-    if(playerCount == 1)player->position.first = GetScreenWidth() / 2 - 15;
-    if(playerCount == 1)pauseFrames = 120;
-    if (lives > 1) {
+    if(!players2)player->position.first = GetScreenWidth() / 2 - 15;
+    if(!players2)pauseFrames = 120;
+    if (player->getLives() > 1) {
         player->setMissiles(std::max(player->getMissiles(), 2));
         player->setShield(3);
     }
-    lives--;
+    player->setLives(player->getLives()-1);
     player->setIframes(60);
     break;
         case 2:
-    if (lives2 > 1) {
+    if (player2->getLives() > 1) {
         player2->setMissiles(std::max(player2->getMissiles(), 2));
         player2->setShield(3);
     }
     player2->setIframes(60);
-    lives2--;
+    player2->setLives(player2->getLives()-1);
+    break;
+        case 3:
+    if (player3->getLives() > 1) {
+        player3->setMissiles(std::max(player3->getMissiles(), 2));
+        player3->setShield(3);
+    }
+    player3->setIframes(60);
+    player3->setLives(player3->getLives()-1);
+    break;
+        case 4:
+    if (player4->getLives() > 1) {
+        player4->setMissiles(std::max(player4->getMissiles(), 2));
+        player4->setShield(3);
+    }
+    player4->setIframes(60);
+    player4->setLives(player4->getLives()-1);
     break;
 }
 }
@@ -371,15 +511,19 @@ void Program::PlayerReset(int identifier) {
 void Program::Reset() {
     Enemy::enemies.clear();
     StdEnemy::attackInProgress = false;
-    player = new Player((GetScreenWidth() / 2) - 15, GetScreenHeight() * 0.75f, 1);
-    if (maxPlayerCount > 1) player2 = new Player((GetScreenWidth() / 2) - 60, GetScreenHeight() * 0.75f, 2);
+    player = new Player((GetScreenWidth() / 2), GetScreenHeight() * 0.75f, 1);
+    if (players2) player2 = new Player((GetScreenWidth() / 2) - 60, GetScreenHeight() * 0.75f, 2);
+    if (players3) player3 = new Player((GetScreenWidth() / 2) - 120, GetScreenHeight() * 0.75f, 3);
+    if (players4) player4 = new Player((GetScreenWidth() / 2) - 180, GetScreenHeight() * 0.75f, 4);
     score = 0;
     respawnCooldown = 1080;
     respawns = 0;
     count = 0;
     delay = 0;
-    lives = 3;
-    lives2 = 3;
+    player->setLives(3);
+    if (players2) player2->setLives(3);
+    if (players3) player3->setLives(3);
+    if (players4) player4->setLives(3);
     newlive = 1000;
     Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
             std::pair<float, float>{350, 150}, 
