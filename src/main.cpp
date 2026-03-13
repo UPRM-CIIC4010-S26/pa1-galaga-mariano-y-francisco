@@ -11,7 +11,7 @@ int main ()
 
 	raylib::Window window(1000, 1000, "Galaga", FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 	Program Galaga;
-	ImageManager::Load();
+	ImageManager::Load(1);
 	SoundManager::Load();
 
 	if (!IsWindowReady()) {
@@ -19,6 +19,7 @@ int main ()
     return 1;
 }
 	bool confirm = false;
+	int spriteToggle = 1;
 
 	Galaga.addPlayer(new Player((GetScreenWidth() / 2), GetScreenHeight() * 0.75f,1), 1);
 	while (!confirm && !WindowShouldClose())
@@ -43,6 +44,19 @@ int main ()
 			Galaga.addPlayer(new Player((GetScreenWidth() / 2) - 180, GetScreenHeight() * 0.75f,4), 4);
 			confirm = true;
 		}
+		if (IsKeyPressed(KEY_V)){
+			ImageManager::Unload();
+			ImageManager::Load(1);
+			spriteToggle = 1;
+		}
+		if (IsKeyPressed(KEY_B)){
+			ImageManager::Unload();
+			ImageManager::Load(2);
+			spriteToggle = 2;
+		}
+
+		if(spriteToggle == 1)Galaga.DrawSpriteToggle(1);
+		if(spriteToggle == 2)Galaga.DrawSpriteToggle(2);
 	}
 	while (!WindowShouldClose()) {
 		BeginDrawing();

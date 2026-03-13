@@ -455,6 +455,19 @@ void Program::PlayerSelectScreen(){
     DrawText("Press 2 for Two Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 20, 24, RED);
     DrawText("Press 3 for Three Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 60, 24, BLUE);
     DrawText("Press 4 for Four Players", (GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 100, 24, YELLOW);
+    DrawText("Press V for sprite sheet 1",(GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 140, 24, WHITE);
+    DrawText("Press B for sprite sheet 2",(GetScreenWidth() / 2) - 150, GetScreenHeight() / 2 + 180, 24, WHITE);
+}
+
+void Program::DrawSpriteToggle(int sheet){
+    switch(sheet){
+        case 1:
+        DrawText("Sprites 1",(GetScreenWidth() / 2) + 200, GetScreenHeight() / 2 + 140, 24, WHITE);
+        break;
+        case 2:
+        DrawText("Sprites 2",(GetScreenWidth() / 2) + 200, GetScreenHeight() / 2 + 180, 24, RED);
+        break;
+    }
 }
 
 void Program::DrawPauseScreen() {

@@ -61,6 +61,7 @@ class Program {
         }
         Program();
         
+        void DrawSpriteToggle(int sheet);
         void Update();
         void Draw();
         void ManageEnemyRespawns();
