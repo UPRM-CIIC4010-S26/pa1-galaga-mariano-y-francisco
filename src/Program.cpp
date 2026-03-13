@@ -329,7 +329,7 @@ void Program::Draw() {
         
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
-    int difficulty = std::max(std::min(score / 1000, 5+(difficultyTweak)), 2);
+    int difficulty = std::max(std::min(score / 1000, 5+(difficultyTweak*3)), 2);
     respawnCooldown -= difficulty;
     if (respawnCooldown <= 0) {
         respawnCooldown = 900;
