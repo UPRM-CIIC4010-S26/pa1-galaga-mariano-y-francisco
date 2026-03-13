@@ -75,7 +75,7 @@ void Program::Update() {
                     player2->setShield(3);
                 }
                 player2->setIframes(60);
-                player2->setLives(player->getLives()-1);
+                player2->setLives(player2->getLives()-1);
             if (players3) if (p.second && HitBox::Collision(player3->hitBox, p.second->hitBox)&& player3->getIframes()<=0) {
                 Animation::animations.push_back(
                     Animation(player3->position.first, player3->position.second, 16, 0, 33, 34, 30 ,30, 3, ImageManager::SpriteSheet)
@@ -88,7 +88,7 @@ void Program::Update() {
                     player3->setShield(3);
                 }
                 player3->setIframes(60);
-                player3->setLives(player->getLives()-1);
+                player3->setLives(player3->getLives()-1);
             }
             if (players4) if (p.second && HitBox::Collision(player4->hitBox, p.second->hitBox)&& player4->getIframes()<=0) {
                 Animation::animations.push_back(
@@ -329,7 +329,7 @@ void Program::Draw() {
         
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
-    int difficulty = std::max(std::min(score / 1000, 5+(difficultyTweak*3)), 2);
+    int difficulty = std::max(std::min(score / 1000, 5+(difficultyTweak*3)), 3);
     respawnCooldown -= difficulty;
     if (respawnCooldown <= 0) {
         respawnCooldown = 900;
@@ -340,8 +340,12 @@ void Program::ManageEnemyRespawns() {
                 if (eType == 1) {
                     p.second = new StEnemy(GetScreenWidth() / 2 - 15, 0, true);
                 } else {
-                    if (difficulty >= 5) p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true, 1);
-                    else p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true);
+                    if (difficulty >= 5) {p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true, 1);
+                    if (difficulty >=7) respawnCooldown = 0;
+                    }
+                    else {p.second = new StdEnemy(GetScreenWidth() / 2 - 15, 0, true);
+                    if (difficulty >= 4) respawnCooldown = 0;
+                    }
                     respawnCooldown /= 2;
                 }
 

@@ -81,29 +81,29 @@ void Player::keyInputs() {
             if (IsKeyDown('Q')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
             if (IsKeyDown('E')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
             if (IsKeyDown(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('R')) this->missileAttack();
-            if (IsKeyPressed('W')) this->useShield();
+            if (IsKeyPressed('R')||IsKeyPressed(KEY_UP)) this->missileAttack();
+            if (IsKeyPressed('W')||IsKeyPressed(KEY_DOWN)) this->useShield();
             break;
         case 2:
             if (IsKeyDown('I')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
             if (IsKeyDown('P')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
             if (IsKeyDown(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('U')) this->missileAttack();
-            if (IsKeyPressed('O')) this->useShield();
+            if (IsKeyPressed('U')||IsKeyPressed(KEY_UP)) this->missileAttack();
+            if (IsKeyPressed('O')||IsKeyPressed(KEY_DOWN)) this->useShield();
             break;
         case 3:
             if (IsKeyDown('Z')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
             if (IsKeyDown('C')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
             if (IsKeyDown(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('V')) this->missileAttack();
-            if (IsKeyPressed('X')) this->useShield();
+            if (IsKeyPressed('V')||IsKeyPressed(KEY_UP)) this->missileAttack();
+            if (IsKeyPressed('X')||IsKeyPressed(KEY_DOWN)) this->useShield();
             break;
         case 4:
             if (IsKeyDown(',')||IsKeyDown(KEY_LEFT)) this->position.first -= this->speed;
             if (IsKeyDown('/')||IsKeyDown(KEY_RIGHT)) this->position.first += this->speed;
             if (IsKeyDown(KEY_SPACE)) this->attack();
-            if (IsKeyPressed('M')) this->missileAttack();
-            if (IsKeyPressed('.')) this->useShield();
+            if (IsKeyPressed('M')||IsKeyPressed(KEY_UP)) this->missileAttack();
+            if (IsKeyPressed('.')||IsKeyPressed(KEY_DOWN)) this->useShield();
             break;
     }
 }
