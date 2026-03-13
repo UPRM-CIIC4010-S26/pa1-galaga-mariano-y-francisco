@@ -6,7 +6,7 @@ class ImageManager {
         inline static Texture2D SpriteSheet;
 
         static void Load() {
-            SpriteSheet = LoadTextureFromImage(LoadImage("images/Arcade - Galaga - Miscellaneous - General Sprites 6.png"));
+            SpriteSheet = LoadTextureFromImage(LoadImage("images/Arcade - Galaga - Miscellaneous - General Sprites 7.png"));
         }
 
         static void Unload() {

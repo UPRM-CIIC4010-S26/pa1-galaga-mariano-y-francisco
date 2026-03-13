@@ -374,26 +374,78 @@ void Program::ManageEnemyRespawns() {
 void Program::DrawStartup() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Galaga", (GetScreenWidth() / 2 - 237), 75, 144, WHITE);
+    DrawText("Pause: D", 5, 30, 30, WHITE);
     DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
-    DrawText("Move: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 -120, 30, WHITE);
-    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{98, 53, 16, 19}, // A button
-                Rectangle{(GetScreenWidth() / 2) - 310.0f, (GetScreenHeight() / 2) - 135.0f, 50, 59}, 
+    DrawText("Move: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() -185, 30, WHITE);
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{98, 53, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) - 310.0f, GetScreenHeight() - 200.0f, 50, 59}, 
                 Vector2{0, 0}, 0, WHITE); 
-    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{115, 53, 16, 19}, // D button
-                Rectangle{(GetScreenWidth() / 2) - 255.0f, (GetScreenHeight() / 2) - 135.0f, 50, 59}, 
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{115, 53, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) - 255.0f, GetScreenHeight() - 200.0f, 50, 59}, 
                 Vector2{0, 0}, 0, WHITE);
-    DrawText("Missiles: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 - 50, 30, WHITE);
+    DrawText("Missiles: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() - 125, 30, WHITE);
         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{132, 53, 16, 19}, 
-                Rectangle{(GetScreenWidth() / 2) - 270.0f, (GetScreenHeight() / 2) - 65.0f, 50, 59}, 
+                Rectangle{(GetScreenWidth() / 2) - 270.0f, GetScreenHeight() - 140.0f, 50, 59}, 
                 Vector2{0, 0}, 0, WHITE);
-    DrawText("Shield: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 + 20, 30, WHITE);
+    DrawText("Shield: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() - 65, 30, WHITE);
         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{149, 53, 16, 19}, 
-                Rectangle{(GetScreenWidth() / 2) - 300.0f, (GetScreenHeight() / 2) + 5.0f, 50, 59}, 
+                Rectangle{(GetScreenWidth() / 2) - 300.0f, GetScreenHeight()- 80.0f, 50, 59}, 
                 Vector2{0, 0}, 0, WHITE);
-    DrawText("Shoot: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() / 2 + 90, 30, WHITE);
+    DrawText("Shoot: ", (GetScreenWidth() / 2) -120, GetScreenHeight() / 2 - 75, 30, WHITE);
         DrawTexturePro(ImageManager::SpriteSheet, Rectangle{166, 53, 80, 19}, 
-                Rectangle{(GetScreenWidth() / 2) - 300.0f, (GetScreenHeight() / 2) + 75.0f, 250, 59}, 
+                Rectangle{(GetScreenWidth() / 2) - 20.0f, (GetScreenHeight() / 2) - 90.0f, 250, 59}, 
                 Vector2{0, 0}, 0, WHITE);
+    if(players2) {
+    DrawText(":Move", (GetScreenWidth() / 2) + 310, GetScreenHeight() -185, 30, WHITE);
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{183, 34, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) + 195.0f, GetScreenHeight() - 200.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE); 
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{200, 34, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) + 250.0f, GetScreenHeight() - 200.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText(":Missiles", (GetScreenWidth() / 2) + 270, GetScreenHeight() - 125, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{217, 34, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) + 210.0f, GetScreenHeight() - 140.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText(":Shield", (GetScreenWidth() / 2) + 300, GetScreenHeight() - 65, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{234, 34, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) + 240.0f, GetScreenHeight()- 80.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    }
+    if(players3) {
+    DrawText("Move: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() -385, 30, WHITE);
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{251, 34, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) - 310.0f, GetScreenHeight() - 400.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE); 
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{268, 34, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) - 255.0f, GetScreenHeight() - 400.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText("Missiles: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() - 325, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{285, 34, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) - 270.0f, GetScreenHeight() - 340.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText("Shield: ", (GetScreenWidth() / 2) - 400, GetScreenHeight() - 265, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{302, 34, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) - 300.0f, GetScreenHeight()- 280.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    }
+    if(players4) {
+    DrawText(":Move", (GetScreenWidth() / 2) + 310, GetScreenHeight() -385, 30, WHITE);
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{251, 54, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) + 195.0f, GetScreenHeight() - 400.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE); 
+    DrawTexturePro(ImageManager::SpriteSheet, Rectangle{268, 54, 16, 19},
+                Rectangle{(GetScreenWidth() / 2) + 250.0f, GetScreenHeight() - 400.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText(":Missiles", (GetScreenWidth() / 2) + 270, GetScreenHeight() - 325, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{285, 54, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) + 210.0f, GetScreenHeight() - 340.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    DrawText(":Shield", (GetScreenWidth() / 2) + 300, GetScreenHeight() - 265, 30, WHITE);
+        DrawTexturePro(ImageManager::SpriteSheet, Rectangle{302, 54, 16, 19}, 
+                Rectangle{(GetScreenWidth() / 2) + 240.0f, GetScreenHeight()- 280.0f, 50, 59}, 
+                Vector2{0, 0}, 0, WHITE);
+    }
 }
 
 void Program::PlayerSelectScreen(){
