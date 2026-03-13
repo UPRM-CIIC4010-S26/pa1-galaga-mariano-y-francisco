@@ -24,6 +24,7 @@ class Program {
         bool players2 = false;
         bool players3 = false;
         bool players4 = false;
+        int difficultyTweak = 0;
 
 
         int pauseFrames = 0;
@@ -53,6 +54,9 @@ class Program {
                     if (!players4) players4 = true;
                     break;
             }
+            if(players2) difficultyTweak = 2;
+            if(players3) difficultyTweak = 3;
+            if(players4) difficultyTweak = 4;
             newlive += 1000;
         }
         Program();

@@ -151,7 +151,7 @@ void Program::Update() {
             if (players2) if (player2->getLives() < 5)player2->setLives(player2->getLives()+1);
             if (players3) if (player3->getLives() < 5)player3->setLives(player3->getLives()+1);
             if (players4) if (player4->getLives() < 5)player4->setLives(player4->getLives()+1);
-            newlive += (1000);
+            newlive += (1000*difficultyTweak);
         }
     
 }
@@ -329,7 +329,7 @@ void Program::Draw() {
         
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
-    int difficulty = std::max(std::min(score / 1000, 5), 2);
+    int difficulty = std::max(std::min(score / 1000, 5+(difficultyTweak)), 2);
     respawnCooldown -= difficulty;
     if (respawnCooldown <= 0) {
         respawnCooldown = 900;
@@ -415,7 +415,8 @@ void Program::DrawGameOver() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Game Over", (GetScreenWidth() / 2) - 380, 50, 144, WHITE);
     DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
-    DrawText(TextFormat("Final Score: %i", score), (GetScreenWidth() / 2) - 100, GetScreenHeight() / 2 + 40, 40, WHITE);
+    DrawText("Final Score", (GetScreenWidth() / 2) - 100, GetScreenHeight() / 2 + 40, 40, WHITE);
+    DrawText(TextFormat("%i pts",score),(GetScreenWidth() / 2) - 100, GetScreenHeight() / 2 + 80, 40, WHITE);
 }
 
 void Program::KeyInputs() {
