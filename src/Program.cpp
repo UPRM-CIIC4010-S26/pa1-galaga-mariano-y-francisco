@@ -151,7 +151,7 @@ void Program::Update() {
             if (players2) if (player2->getLives() < 5)player2->setLives(player2->getLives()+1);
             if (players3) if (player3->getLives() < 5)player3->setLives(player3->getLives()+1);
             if (players4) if (player4->getLives() < 5)player4->setLives(player4->getLives()+1);
-            newlive += (1000*difficultyTweak);
+            newlive += (1000*(difficultyTweak+1));
         }
     
 }
